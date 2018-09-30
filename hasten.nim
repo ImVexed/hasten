@@ -6,10 +6,13 @@ proc hasten(url="https://hastebin.com/", raw=false): int =
     else:
         try:
             let res = parseJson postContent(url & "documents", "", readAll(stdin))
-            echo url & res["key"].getStr
+            if raw:
+                echo url & "raw/" & res["key"].getStr
+            else:
+                echo url & res["key"].getStr
         except:
             echo "Error occured while uploading document"
 
     return 1
   
-dispatch(hasten, prelude = "Usage:\necho Hello, World! | ", help = {"url":"base url to upload to", "raw":"return the raw URL"})
+dispatch(hasten, prelude = "Usage:\n  echo Hello, World! | ", help = {"url":"base url to upload to", "raw":"return the raw URL"})
